@@ -1,0 +1,699 @@
+{
+  "config_version": "1.0",
+  "module_id": "CHANGE_GPS_DIAGNOSE_V1",
+  "purpose": "Deterministic 'What's happening?' diagnostic that maps responses to ADKAR-like barrier, Bridges phase, and Zones of Change, plus signals for routing and personalization.",
+  "scales": {
+    "likert_0_4": {
+      "min": 0,
+      "max": 4,
+      "labels": {
+        "0": "Strongly Disagree",
+        "1": "Disagree",
+        "2": "Mixed",
+        "3": "Agree",
+        "4": "Strongly Agree"
+      }
+    },
+    "forced_choice_1_4": {
+      "min": 1,
+      "max": 4,
+      "labels": {
+        "1": "Option 1",
+        "2": "Option 2",
+        "3": "Option 3",
+        "4": "Option 4"
+      }
+    }
+  },
+  "enums": {
+    "signals_barrier_tag": [
+      "AWARENESS",
+      "DESIRE",
+      "KNOWLEDGE",
+      "ABILITY",
+      "REINFORCEMENT"
+    ],
+    "where_adkar_barrier": [
+      "AWARENESS",
+      "DESIRE",
+      "KNOWLEDGE",
+      "ABILITY",
+      "REINFORCEMENT",
+      "UNKNOWN"
+    ],
+    "where_bridges_phase": [
+      "ENDINGS",
+      "NEUTRAL_ZONE",
+      "NEW_BEGINNING",
+      "UNKNOWN"
+    ],
+    "where_zones_of_change": [
+      "STATUS_QUO",
+      "DISRUPTION",
+      "ADAPTATION",
+      "ADOPTION",
+      "INNOVATION",
+      "UNKNOWN"
+    ],
+    "route_hint": [
+      "REGULATE_FIRST",
+      "MICRO_MOVE_ONLY",
+      "NORMAL"
+    ]
+  },
+  "global_rules": {
+    "completeness_min_answer_ratio": 0.7,
+    "classification_min_confidence": 0.15,
+    "confidence_formula": {
+      "type": "top_minus_second_over_max_possible",
+      "notes": "confidence = (winner_score - runner_up_score) / max_possible_per_category"
+    },
+    "tie_breakers": {
+      "use_lower_variance_first": true,
+      "then_fixed_priority_order": true
+    },
+    "normalization": {
+      "mean_0_4": "raw_sum / answered_item_count",
+      "normalized_0_100": "(raw_sum / (answered_item_count * 4)) * 100"
+    }
+  },
+  "modules": [
+    {
+      "id": "ADKAR_BARRIER",
+      "type": "likert",
+      "required": true,
+      "items": [
+        {
+          "id": "ADKAR_A1",
+          "prompt": "I understand why this change is happening.",
+          "scale": "likert_0_4",
+          "dimension": "AWARENESS"
+        },
+        {
+          "id": "ADKAR_A2",
+          "prompt": "I understand what problem the change is trying to solve.",
+          "scale": "likert_0_4",
+          "dimension": "AWARENESS"
+        },
+        {
+          "id": "ADKAR_D1",
+          "prompt": "I want to support this change (even if I don’t love it).",
+          "scale": "likert_0_4",
+          "dimension": "DESIRE"
+        },
+        {
+          "id": "ADKAR_D2",
+          "prompt": "I can name a personal 'why' or benefit that matters to me.",
+          "scale": "likert_0_4",
+          "dimension": "DESIRE"
+        },
+        {
+          "id": "ADKAR_K1",
+          "prompt": "I know what I’m supposed to do differently.",
+          "scale": "likert_0_4",
+          "dimension": "KNOWLEDGE"
+        },
+        {
+          "id": "ADKAR_K2",
+          "prompt": "I know where to find guidance (docs, training, examples).",
+          "scale": "likert_0_4",
+          "dimension": "KNOWLEDGE"
+        },
+        {
+          "id": "ADKAR_AB1",
+          "prompt": "I can perform the new behavior/process with minimal help.",
+          "scale": "likert_0_4",
+          "dimension": "ABILITY"
+        },
+        {
+          "id": "ADKAR_AB2",
+          "prompt": "I have time/tools/access to do the new way of working.",
+          "scale": "likert_0_4",
+          "dimension": "ABILITY"
+        },
+        {
+          "id": "ADKAR_R1",
+          "prompt": "I get feedback or recognition that reinforces the new behavior.",
+          "scale": "likert_0_4",
+          "dimension": "REINFORCEMENT"
+        },
+        {
+          "id": "ADKAR_R2",
+          "prompt": "If I slip back to the old way, someone/something catches it (metrics, reminders, check-ins).",
+          "scale": "likert_0_4",
+          "dimension": "REINFORCEMENT"
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "dimension_aggregation": "mean",
+        "dimensions": [
+          "AWARENESS",
+          "DESIRE",
+          "KNOWLEDGE",
+          "ABILITY",
+          "REINFORCEMENT"
+        ],
+        "classification": {
+          "rule": "lowest_dimension_mean",
+          "strict_unknown_if_all_means_gt": 2.0,
+          "tie_break_priority_lowest_first": [
+            "AWARENESS",
+            "DESIRE",
+            "KNOWLEDGE",
+            "ABILITY",
+            "REINFORCEMENT"
+          ]
+        },
+        "severity": {
+          "rule": "invert_lowest_mean_to_0_100",
+          "formula": "round((1 - (lowest_mean / 4)) * 100)"
+        },
+        "outputs": {
+          "adkar_barrier": {
+            "target_path": "coach.where_you_likely_are.adkar_barrier",
+            "enum": "where_adkar_barrier"
+          },
+          "barrier_tag": {
+            "target_path": "input_echo.signals.barrier_tag",
+            "enum": "signals_barrier_tag",
+            "fallback_if_unknown": "lowest_dimension_anyway"
+          },
+          "ability_mean": {
+            "target_path": "_internal.ability_mean_0_4"
+          },
+          "reinforcement_mean": {
+            "target_path": "_internal.reinforcement_mean_0_4"
+          }
+        }
+      }
+    },
+    {
+      "id": "CHANGE_LOAD",
+      "type": "likert",
+      "required": true,
+      "items": [
+        {
+          "id": "LOAD_L1",
+          "prompt": "My workload has increased because of this change.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "LOAD_L2",
+          "prompt": "I feel stressed or mentally overloaded right now.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "LOAD_L3",
+          "prompt": "I have enough time to learn/practice the new way.",
+          "scale": "likert_0_4",
+          "reverse_scored": true
+        },
+        {
+          "id": "LOAD_L4",
+          "prompt": "I’m dealing with multiple changes at once.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "LOAD_L5",
+          "prompt": "I have the emotional energy to handle setbacks while learning.",
+          "scale": "likert_0_4",
+          "reverse_scored": true
+        },
+        {
+          "id": "LOAD_L6",
+          "prompt": "I can focus at work without constant interruptions or fire drills.",
+          "scale": "likert_0_4",
+          "reverse_scored": true
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "reverse_score_rule": "rev(x)=4-x",
+        "aggregation": "mean",
+        "output": {
+          "load_score_0_4": {
+            "target_path": "_internal.load_score_0_4"
+          },
+          "route_hint": {
+            "target_path": "_internal.route_hint",
+            "rule": "thresholds",
+            "thresholds": [
+              {
+                "if_gte": 3.0,
+                "value": "REGULATE_FIRST"
+              },
+              {
+                "if_gte": 2.0,
+                "value": "MICRO_MOVE_ONLY"
+              },
+              {
+                "default": "NORMAL"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "GOVERNANCE_CLARITY",
+      "type": "likert",
+      "required": true,
+      "items": [
+        {
+          "id": "GOV_G1",
+          "prompt": "I know who owns final decisions when there’s disagreement.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "GOV_G2",
+          "prompt": "I know what decisions I can make vs. what must be escalated.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "GOV_G3",
+          "prompt": "I know where the source of truth lives for this change (updates, FAQs).",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "GOV_G4",
+          "prompt": "When I ask a question, I get a clear answer quickly.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "GOV_G5",
+          "prompt": "I know the timeline and what is expected by when.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "GOV_G6",
+          "prompt": "There is a clear way to raise issues and see progress on fixes.",
+          "scale": "likert_0_4"
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "aggregation": "mean",
+        "output": {
+          "gov_clarity_mean_0_4": {
+            "target_path": "_internal.gov_clarity_mean_0_4"
+          },
+          "signals_clarity_0_5": {
+            "target_path": "input_echo.signals.clarity",
+            "formula": "round((gov_clarity_mean_0_4 / 4) * 5)",
+            "clamp": [
+              0,
+              5
+            ]
+          },
+          "clarity_band": {
+            "target_path": "_internal.gov_clarity_band",
+            "thresholds": [
+              {
+                "if_lte": 1.5,
+                "value": "SEVERE_UNCERTAINTY"
+              },
+              {
+                "if_lte": 2.5,
+                "value": "SOME_UNCERTAINTY"
+              },
+              {
+                "default": "CLEAR_ENOUGH"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ZONES_OF_CHANGE",
+      "type": "likert",
+      "required": true,
+      "items": [
+        {
+          "id": "ZONE_Z1",
+          "prompt": "The change hasn’t really affected my day-to-day work yet.",
+          "scale": "likert_0_4",
+          "zone_signal": "STATUS_QUO"
+        },
+        {
+          "id": "ZONE_Z2",
+          "prompt": "My normal routines/results are disrupted right now.",
+          "scale": "likert_0_4",
+          "zone_signal": "DISRUPTION"
+        },
+        {
+          "id": "ZONE_Z3",
+          "prompt": "I’m trying new ways of working and learning what works (it’s messy).",
+          "scale": "likert_0_4",
+          "zone_signal": "ADAPTATION_OR_ADOPTION"
+        },
+        {
+          "id": "ZONE_Z4",
+          "prompt": "The change feels normal and I’m improving beyond the original plan.",
+          "scale": "likert_0_4",
+          "zone_signal": "INNOVATION"
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "classification": {
+          "rule": "argmax_item_score",
+          "confidence_rule": "top_minus_second_over_4",
+          "min_confidence": 0.15
+        },
+        "mapping": {
+          "ZONE_Z1": "STATUS_QUO",
+          "ZONE_Z2": "DISRUPTION",
+          "ZONE_Z4": "INNOVATION",
+          "Z3_deterministic_rule": {
+            "if_all_true": [
+              {
+                "expr": "_internal.ability_mean_0_4 >= 2.5"
+              },
+              {
+                "expr": "_internal.reinforcement_mean_0_4 >= 2.0"
+              }
+            ],
+            "then": "ADOPTION",
+            "else": "ADAPTATION"
+          },
+          "unknown_if_low_confidence": true
+        },
+        "outputs": {
+          "zones_of_change": {
+            "target_path": "coach.where_you_likely_are.zones_of_change",
+            "enum": "where_zones_of_change"
+          },
+          "zone_confidence": {
+            "target_path": "_internal.zone_confidence_0_1"
+          }
+        }
+      }
+    },
+    {
+      "id": "BRIDGES_PHASE",
+      "type": "likert",
+      "required": true,
+      "items": [
+        {
+          "id": "BRIDGES_E1",
+          "prompt": "I’m still letting go of how things used to work.",
+          "scale": "likert_0_4",
+          "dimension": "ENDINGS"
+        },
+        {
+          "id": "BRIDGES_E2",
+          "prompt": "I feel loss/frustration about what’s being left behind.",
+          "scale": "likert_0_4",
+          "dimension": "ENDINGS"
+        },
+        {
+          "id": "BRIDGES_NZ1",
+          "prompt": "Things feel unclear/in-between; I’m not sure what the new normal is yet.",
+          "scale": "likert_0_4",
+          "dimension": "NEUTRAL_ZONE"
+        },
+        {
+          "id": "BRIDGES_NZ2",
+          "prompt": "I’m experimenting, but consistency isn’t there yet.",
+          "scale": "likert_0_4",
+          "dimension": "NEUTRAL_ZONE"
+        },
+        {
+          "id": "BRIDGES_NB1",
+          "prompt": "I can see how the new way helps and I’m bought in.",
+          "scale": "likert_0_4",
+          "dimension": "NEW_BEGINNING"
+        },
+        {
+          "id": "BRIDGES_NB2",
+          "prompt": "I’m acting with confidence in the new way and helping it stick.",
+          "scale": "likert_0_4",
+          "dimension": "NEW_BEGINNING"
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "dimension_aggregation": "mean",
+        "classification": {
+          "rule": "highest_dimension_mean",
+          "confidence_rule": "top_minus_second_over_4",
+          "min_confidence": 0.15,
+          "tie_break_priority_highest_first": [
+            "NEUTRAL_ZONE",
+            "ENDINGS",
+            "NEW_BEGINNING"
+          ]
+        },
+        "outputs": {
+          "bridges_phase": {
+            "target_path": "coach.where_you_likely_are.bridges_phase",
+            "enum": "where_bridges_phase"
+          },
+          "bridges_confidence": {
+            "target_path": "_internal.bridges_confidence_0_1"
+          }
+        }
+      }
+    },
+    {
+      "id": "PERSONA_CLASSIFIER",
+      "type": "forced_choice",
+      "required": false,
+      "items": [
+        {
+          "id": "PERS_P1",
+          "prompt": "When change is announced, I usually…",
+          "options": {
+            "1": "Jump in early and try it",
+            "2": "Wait until it’s proven",
+            "3": "Focus on what might break or go wrong",
+            "4": "Disengage because it feels pointless"
+          }
+        },
+        {
+          "id": "PERS_P2",
+          "prompt": "In ambiguity, I prefer…",
+          "options": {
+            "1": "Experimenting",
+            "2": "Getting clear rules first",
+            "3": "Escalating to authority quickly",
+            "4": "Staying quiet and doing my own workaround"
+          }
+        },
+        {
+          "id": "PERS_P3",
+          "prompt": "When others resist, I…",
+          "options": {
+            "1": "Persuade and help them see possibilities",
+            "2": "Let them come around over time",
+            "3": "Get frustrated and push compliance",
+            "4": "Avoid the conflict"
+          }
+        },
+        {
+          "id": "PERS_P4",
+          "prompt": "My default stress response is…",
+          "options": {
+            "1": "Action",
+            "2": "Analysis",
+            "3": "Control",
+            "4": "Withdrawal"
+          }
+        },
+        {
+          "id": "PERS_P5",
+          "prompt": "If the change is messy, I…",
+          "options": {
+            "1": "Tolerate mess if progress is happening",
+            "2": "Need a stable plan before I commit",
+            "3": "Demand immediate clarity/structure",
+            "4": "Assume it will fail"
+          }
+        },
+        {
+          "id": "PERS_P6",
+          "prompt": "When learning a new process, I…",
+          "options": {
+            "1": "Learn by doing",
+            "2": "Read/watch first",
+            "3": "Want guided support live",
+            "4": "Procrastinate until forced"
+          }
+        },
+        {
+          "id": "PERS_P7",
+          "prompt": "My relationship to new tools is…",
+          "options": {
+            "1": "Excited",
+            "2": "Cautious",
+            "3": "Skeptical",
+            "4": "Avoidant"
+          }
+        },
+        {
+          "id": "PERS_P8",
+          "prompt": "If leadership messages are vague, I…",
+          "options": {
+            "1": "Ask questions",
+            "2": "Wait",
+            "3": "Fill in blanks and tell others",
+            "4": "Tune out"
+          }
+        }
+      ],
+      "scoring": {
+        "rule": "mode_of_selected_option",
+        "tie_break_priority": [
+          "2",
+          "3",
+          "1",
+          "4"
+        ],
+        "mapping": {
+          "1": "MOVER_EARLY_ADAPTER",
+          "2": "WAITER_PROOF_SEEKER",
+          "3": "CONTROLLER_RISK_SENTINEL",
+          "4": "WITHDRAWN_CHECKED_OUT"
+        },
+        "output": {
+          "persona_label": {
+            "target_path": "_internal.persona_label"
+          }
+        }
+      }
+    },
+    {
+      "id": "POINT_OF_DECISION",
+      "type": "likert",
+      "required": false,
+      "items": [
+        {
+          "id": "POD_P1",
+          "prompt": "I feel clear enough to commit to trying the change this week.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "POD_P2",
+          "prompt": "Even if I don’t like everything, I’m willing to take the next step.",
+          "scale": "likert_0_4"
+        },
+        {
+          "id": "POD_P3",
+          "prompt": "I’m spending more energy on how to make it work than why this is happening.",
+          "scale": "likert_0_4"
+        }
+      ],
+      "scoring": {
+        "completeness_min_answer_ratio": 0.7,
+        "aggregation": "mean",
+        "outputs": {
+          "pod_mean_0_4": {
+            "target_path": "_internal.pod_mean_0_4"
+          },
+          "pod_route_override": {
+            "target_path": "_internal.pod_route_override",
+            "rule": "if_then",
+            "if_all_true": [
+              {
+                "expr": "_internal.pod_mean_0_4 < 2.0"
+              },
+              {
+                "expr": "_internal.load_score_0_4 >= 2.5"
+              }
+            ],
+            "then": "REGULATE_FIRST",
+            "else": null
+          }
+        }
+      }
+    }
+  ],
+  "aggregation": {
+    "signals": {
+      "clarity": {
+        "from": "GOVERNANCE_CLARITY",
+        "path": "input_echo.signals.clarity"
+      },
+      "confidence": {
+        "rule": "weighted_from_ability_and_pod",
+        "inputs": {
+          "ability_mean_0_4": "_internal.ability_mean_0_4",
+          "pod_mean_0_4": "_internal.pod_mean_0_4"
+        },
+        "defaults": {
+          "pod_mean_0_4_if_missing": 2.0
+        },
+        "weights": {
+          "ability": 0.7,
+          "pod": 0.3
+        },
+        "formula": "round((((0.7*ability_mean_0_4) + (0.3*pod_mean_0_4)) / 4) * 5)",
+        "clamp": [
+          0,
+          5
+        ],
+        "output_path": "input_echo.signals.confidence"
+      },
+      "barrier_tag": {
+        "from": "ADKAR_BARRIER",
+        "path": "input_echo.signals.barrier_tag"
+      },
+      "action_completed": {
+        "default": false,
+        "output_path": "input_echo.signals.action_completed"
+      }
+    },
+    "where_you_likely_are": {
+      "adkar_barrier": {
+        "from": "ADKAR_BARRIER",
+        "path": "coach.where_you_likely_are.adkar_barrier"
+      },
+      "bridges_phase": {
+        "from": "BRIDGES_PHASE",
+        "path": "coach.where_you_likely_are.bridges_phase"
+      },
+      "zones_of_change": {
+        "from": "ZONES_OF_CHANGE",
+        "path": "coach.where_you_likely_are.zones_of_change"
+      },
+      "confidence_note": {
+        "rule": "compose_note_from_low_confidence_flags",
+        "output_path": "coach.where_you_likely_are.confidence_note",
+        "templates": {
+          "default": "Signals are directional, not absolute.",
+          "low_data": "Low confidence: not enough responses to score reliably.",
+          "low_confidence": "Low confidence: tied or near-tied signals."
+        }
+      }
+    },
+    "routing": {
+      "route_hint": {
+        "priority_order": [
+          "_internal.pod_route_override",
+          "_internal.route_hint"
+        ],
+        "default": "NORMAL",
+        "output_path": "_internal.final_route_hint"
+      }
+    }
+  },
+  "schema_mapping": {
+    "target_schema": "ModeARequiredResponseJSONSchema_v1",
+    "paths": {
+      "signals": "input_echo.signals",
+      "where_you_likely_are": "coach.where_you_likely_are"
+    },
+    "required_fields_present": [
+      "input_echo.signals.clarity",
+      "input_echo.signals.confidence",
+      "input_echo.signals.barrier_tag",
+      "input_echo.signals.action_completed",
+      "coach.where_you_likely_are.adkar_barrier",
+      "coach.where_you_likely_are.bridges_phase",
+      "coach.where_you_likely_are.zones_of_change",
+      "coach.where_you_likely_are.confidence_note"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "ui_config_version": "1.0",
+  "file_id": "CHANGE_GPS_UI_TOOLS_AND_SCRIPTS_V1",
+  "pages": [
+    {
+      "id": "PAGE_TOOLS_SCRIPTS",
+      "route": "/tools",
+      "title": "Tools & Scripts",
+      "subtitle": "Pick a tool. Get language you can use today.",
+      "role_bridge_message": {
+        "INDIVIDUAL": "If you need clarity or support, name what you need. Leaders can’t fix what they can’t see.",
+        "PEOPLE_LEADER": "If your team is stuck, make the next step obvious. Clarity beats motivation."
+      }
+    },
+    {
+      "id": "PAGE_TOOL_DETAIL",
+      "route": "/tools/:toolSlug",
+      "template_ref": "TPL_MIRRORED_ROLE_TOPIC_PAGE",
+      "data_source": {
+        "type": "content_library_by_slug",
+        "slug_param": "toolSlug",
+        "returns": "topic"
+      }
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "ui_config_version": "1.0",
+  "file_id": "CHANGE_GPS_UI_BASE_V1",
+  "app_id": "CHANGE_GPS",
+  "global_layout": {
+    "top_bar": {
+      "always_visible": true,
+      "role_toggle": {
+        "enabled": true,
+        "label": "View as",
+        "options": [
+          {
+            "value": "INDIVIDUAL",
+            "label": "Individual"
+          },
+          {
+            "value": "PEOPLE_LEADER",
+            "label": "People Leader"
+          }
+        ],
+        "behavior": {
+          "mirror_same_topic_page": true,
+          "rerender_on_toggle": [
+            "role_specific_framing",
+            "role_specific_actions",
+            "role_bridge_message"
+          ]
+        }
+      }
+    },
+    "navigation": {
+      "style": "left_nav",
+      "items": [
+        {
+          "id": "NAV_DIAGNOSE",
+          "label": "Diagnose",
+          "route": "/diagnose",
+          "icon": "map-pin"
+        },
+        {
+          "id": "NAV_NEXT_BEST_MOVE",
+          "label": "Next Best Move",
+          "route": "/do-next",
+          "icon": "arrow-right"
+        },
+        {
+          "id": "NAV_TOOLS_SCRIPTS",
+          "label": "Tools & Scripts",
+          "route": "/tools",
+          "icon": "tool"
+        },
+        {
+          "id": "NAV_REGULATE",
+          "label": "Regulate",
+          "route": "/regulate",
+          "icon": "wave"
+        },
+        {
+          "id": "NAV_SIMULATOR",
+          "label": "Simulator",
+          "route": "/simulator",
+          "icon": "repeat"
+        },
+        {
+          "id": "NAV_MODE_A_COACH",
+          "label": "Mode A Coach",
+          "route": "/coach",
+          "icon": "sparkle"
+        },
+        {
+          "id": "NAV_PLAN_BUILDER",
+          "label": "Plan Builder",
+          "route": "/plan",
+          "icon": "clipboard"
+        }
+      ]
+    }
+  },
+  "visual_system": {
+    "surfaces_only_for_text": true,
+    "tokens": {
+      "surfaces": {
+        "primary": "#FFFFFF",
+        "secondary": "#F7F8FB"
+      },
+      "text": {
+        "primary": "#101828",
+        "secondary": "#475467",
+        "tertiary": "#667085"
+      }
+    },
+    "ambient_background": {
+      "enabled": true,
+      "modes": [
+        "Default",
+        "Focus",
+        "Reflection"
+      ],
+      "non_negotiables": {
+        "never_place_readable_text_directly_on_gradient": true,
+        "motion_optional_user_controllable": true,
+        "respect_os_reduce_motion": true,
+        "do_not_convey_meaning_with_background_only": true,
+        "keyboard_focus_must_be_visible": true
+      }
+    }
+  },
+  "accessibility": {
+    "baseline": "WCAG_2_2_AA",
+    "controls": {
+      "reduce_motion_toggle": {
+        "enabled": true,
+        "label": "Reduce motion",
+        "default": "system"
+      },
+      "high_contrast_mode": {
+        "enabled": true,
+        "label": "High contrast",
+        "default": false
+      },
+      "text_size": {
+        "enabled": true,
+        "label": "Text size",
+        "options": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "default": "M"
+      }
+    }
+  }
+}

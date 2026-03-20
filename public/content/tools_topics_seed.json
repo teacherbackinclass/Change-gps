@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "type": "tools_topics_seed",
+  "topics": [
+    {
+      "id": "TOOL_ASK_FOR_CLARITY",
+      "slug": "ask-for-clarity",
+      "title": "Ask for clarity (script)",
+      "subtitle": "A short script to get what you need without drama.",
+      "format": "SCRIPT",
+      "best_for": "Unclear decisions, vague expectations",
+      "estimated_time": "5 min",
+      "primary_model_tag": "COMMS_CHANGE",
+      "bridge_messages": {
+        "INDIVIDUAL": "Be specific: what decision, what by when, and what you tried.",
+        "PEOPLE_LEADER": "Reduce uncertainty: what changes, what stays, where to ask, and what to do next."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this when you feel stuck because you don’t know what’s expected.",
+        "PEOPLE_LEADER": "Use this when your team is waiting because decision rights are unclear."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": [
+          "Name the decision you need.",
+          "Ask who owns it.",
+          "Ask what ‘good’ looks like this week."
+        ],
+        "PEOPLE_LEADER": [
+          "Name the owner.",
+          "Name the timeline.",
+          "Name the first safe step."
+        ]
+      },
+      "scripts": {
+        "INDIVIDUAL": [
+          {
+            "label": "One-sentence ask",
+            "text": "Here’s what I need to move forward: [X]. Who owns this decision, and what’s the next step?"
+          }
+        ],
+        "PEOPLE_LEADER": [
+          {
+            "label": "Manager reply",
+            "text": "Here’s what we know, what we don’t, and what we’re doing this week. Questions go here: [channel]."
+          }
+        ]
+      },
+      "assets": []
+    },
+    {
+      "id": "TOOL_TEN_MIN_HUDDLE",
+      "slug": "ten-minute-huddle",
+      "title": "10-minute huddle script",
+      "subtitle": "A simple structure to make the next step obvious.",
+      "format": "SCRIPT",
+      "best_for": "Mixed messages, low adoption",
+      "estimated_time": "10 min",
+      "primary_model_tag": "REINFORCEMENT",
+      "bridge_messages": {
+        "INDIVIDUAL": "Tell your leader what blocked you and what you tried.",
+        "PEOPLE_LEADER": "Protect capacity: one standard, one example, one practice."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this to ask for a clear weekly standard and practice focus.",
+        "PEOPLE_LEADER": "Use this to create a predictable weekly rhythm during change."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": [
+          "Ask what the weekly standard is.",
+          "Ask what one example ‘good’ looks like.",
+          "Ask what to practice this week."
+        ],
+        "PEOPLE_LEADER": [
+          "State the standard in one sentence.",
+          "Show one example.",
+          "Pick one practice task and one blocker question."
+        ]
+      },
+      "scripts": {
+        "INDIVIDUAL": [
+          {
+            "label": "Ask for the weekly standard",
+            "text": "What is the one thing we should do consistently this week in the new way?"
+          }
+        ],
+        "PEOPLE_LEADER": [
+          {
+            "label": "10-minute huddle",
+            "text": "This week’s expectation is: [one sentence]. Why it matters: [one sentence]. Today’s change: [one sentence]. Practice: [5 minutes]. Blockers: [2 minutes]."
+          }
+        ]
+      },
+      "assets": []
+    }
+  ]
+}

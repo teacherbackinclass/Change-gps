@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "app_id": "CHANGE_GPS",
+  "files": {
+    "ui_base": "/configs/02_ui_base_config.json",
+    "ui_tools": "/configs/03_ui_tools_and_scripts_config.json",
+    "ui_shared": "/configs/04_ui_shared_mirrored_template_config.json",
+    "diagnose_logic": "/configs/01_diagnose_module_config.json",
+    "tools_topics": "/content/tools_topics_seed.json",
+    "coach_library": "/content/coach_library_seed.json"
+  }
+}

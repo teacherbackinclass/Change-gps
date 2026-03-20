@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "items": [
+    {
+      "id": "PROSCI_RESOURCES_DOWNLOADS",
+      "title": "Prosci — Free resources, worksheets, templates and more (downloads hub)",
+      "type": "toolkit_hub",
+      "url": "https://www.prosci.com/resources/downloads",
+      "role_tags": [
+        "BOTH"
+      ],
+      "summary": "A starting point for public change-management templates and planning aids.",
+      "citations": [
+        {
+          "title": "Prosci downloads hub",
+          "url": "https://www.prosci.com/resources/downloads"
+        }
+      ]
+    }
+  ]
+}

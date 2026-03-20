@@ -1,0 +1,111 @@
+{
+  "ui_config_version": "1.0",
+  "file_id": "CHANGE_GPS_UI_SHARED_MIRROR_V1",
+  "templates": {
+    "TPL_MIRRORED_ROLE_TOPIC_PAGE": {
+      "id": "TPL_MIRRORED_ROLE_TOPIC_PAGE",
+      "purpose": "Single shared template used by Tools, Topics, and Coach pages with identical role-toggle/bridge behavior.",
+      "rerender_on_role_toggle": {
+        "keep_route_same": true,
+        "preserve_scroll_position": true,
+        "rerender_blocks": [
+          "role_specific_framing",
+          "role_specific_actions",
+          "role_specific_assets",
+          "bridge_message",
+          "citations_block"
+        ],
+        "announce_for_screen_readers": {
+          "enabled": true,
+          "message_template": "Showing {role} view for the same page."
+        }
+      },
+      "bridge_banner": {
+        "placement": "top_of_content",
+        "style": "pill",
+        "icon": "bridge",
+        "bindings": {
+          "INDIVIDUAL": "topic.bridge_messages.INDIVIDUAL",
+          "PEOPLE_LEADER": "topic.bridge_messages.PEOPLE_LEADER"
+        },
+        "fallbacks": {
+          "INDIVIDUAL": "Even great leaders aren’t mind readers. If you need clarity/support, name what you need.",
+          "PEOPLE_LEADER": "Reduce uncertainty: what changes, what stays, where to ask, and what to do next."
+        },
+        "cta": {
+          "label": "Flip the toggle to see the other side",
+          "action": "toggle_role"
+        }
+      },
+      "sections": [
+        {
+          "id": "SEC_FRAMING",
+          "type": "role_specific_framing_block",
+          "surface": "primary",
+          "bind": {
+            "INDIVIDUAL": "topic.role_specific_framing.INDIVIDUAL",
+            "PEOPLE_LEADER": "topic.role_specific_framing.PEOPLE_LEADER"
+          }
+        },
+        {
+          "id": "SEC_DO",
+          "type": "role_specific_actions_block",
+          "surface": "primary",
+          "bind": {
+            "INDIVIDUAL": "topic.role_specific_actions.INDIVIDUAL",
+            "PEOPLE_LEADER": "topic.role_specific_actions.PEOPLE_LEADER"
+          }
+        },
+        {
+          "id": "SEC_SAY",
+          "type": "scripts_block",
+          "surface": "primary",
+          "bind": {
+            "INDIVIDUAL": "topic.scripts.INDIVIDUAL",
+            "PEOPLE_LEADER": "topic.scripts.PEOPLE_LEADER"
+          }
+        },
+        {
+          "id": "SEC_ASSETS",
+          "type": "assets_block",
+          "surface": "secondary",
+          "bind": "topic.assets"
+        },
+        {
+          "id": "SEC_CITATIONS",
+          "type": "citations_block",
+          "surface": "secondary",
+          "bind": "coach.citations"
+        }
+      ],
+      "accessibility_contract": {
+        "text_on_surfaces_only": true,
+        "focus_visible": true,
+        "keyboard_nav_supported": true,
+        "respect_reduce_motion": true
+      }
+    }
+  },
+  "applies_to_routes": [
+    "/tools/:toolSlug",
+    "/topics/:topicSlug",
+    "/coach",
+    "/coach/:topicSlug"
+  ],
+  "route_bindings": {
+    "tools": {
+      "data_source": "content_library_by_slug",
+      "slug_param": "toolSlug",
+      "returns": "topic"
+    },
+    "topics": {
+      "data_source": "content_library_by_slug",
+      "slug_param": "topicSlug",
+      "returns": "topic"
+    },
+    "coach": {
+      "data_source": "coach_response",
+      "returns": "coach"
+    }
+  }
+}
