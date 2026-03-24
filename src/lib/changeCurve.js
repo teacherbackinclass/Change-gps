@@ -10,3 +10,17 @@ export function curveY(xN, top = 44, depth = 120) {
   const term = 1 - 4 * Math.pow(x - 0.5, 2);
   return top + depth * Math.max(0, term);
 }
+export function clamp01(n) {
+  return Math.max(0, Math.min(1, n));
+}
+
+export function positionFromDiagnosis(diagnosis) {
+  if (!diagnosis) return 0.15; // Default to Status Quo
+  // Maps 0-4 signal average to 0.0-1.0 curve position
+  return clamp01(diagnosis.avg / 4);
+}
+
+export function formatStage(stageId) {
+  const stage = STAGES.find(s => s.id === stageId);
+  return stage ? stage.label : 'Unknown';
+}
