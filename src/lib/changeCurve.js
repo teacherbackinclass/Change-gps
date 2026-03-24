@@ -24,3 +24,9 @@ export function formatStage(stageId) {
   const stage = STAGES.find(s => s.id === stageId);
   return stage ? stage.label : 'Unknown';
 }
+export function stageFromPosition(xN) {
+  const x = clamp01(xN);
+  // Find the stage where x falls within the range [min, max]
+  const stage = STAGES.find(s => x >= s.range[0] && x <= s.range[1]);
+  return stage || STAGES[0]; // Fallback to first stage if somehow out of bounds
+}
