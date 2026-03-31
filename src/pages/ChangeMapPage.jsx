@@ -1,8 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { MapPin, MoveRight, Plus, SlidersHorizontal } from 'lucide-react';
 import RoleMirrorHeader from '../components/RoleMirrorHeader';
+import { AppContext } from '../App'; // <--- Check this path!
 import { STAGES, clamp01, curveY, formatStage, positionFromDiagnosis, stageFromPosition } from '../lib/changeCurve';
 
+export default function ChangeMapPage() {
+  // SAFETY CHECK: If AppContext is missing, create a fake 'state' so it doesn't crash
+  const context = useContext(AppContext) || {}; 
+  const state = context.state || { role: 'PEOPLE_LEADER' }; 
+  const { role } = state;
+  
 const CURVE_MODES = [
   { id: 'SIMPLE', label: 'Simple' },
   { id: 'REAL_LIFE', label: 'Real Life' },
