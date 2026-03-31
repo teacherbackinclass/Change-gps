@@ -5,13 +5,13 @@ import { AppContext } from '../App';
 import { STAGES, clamp01, curveY, formatStage, positionFromDiagnosis, stageFromPosition } from '../lib/changeCurve';
 
 export default function ChangeMapPage() {
-  // 1. Safety Check for the "Brain" (Context)
+  // 1. Safety Check for the Context
   const context = useContext(AppContext) || {};
   const state = context.state || { role: 'PEOPLE_LEADER', activeRoute: '/map' };
   const dispatch = context.dispatch || (() => {});
   const { role } = state;
 
-  // 2. Page State
+  // 2. Local Page State
   const [position, setPosition] = useState(0.15);
   const svgRef = useRef(null);
 
@@ -33,11 +33,11 @@ export default function ChangeMapPage() {
         subtitle="Locate where you or your team are in the transition."
       />
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6">
+        <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
           <div>
-            <h3 className="font-bold text-slate-800">Current Phase: {currentStage.label}</h3>
-            <p className="text-sm text-slate-500">Click the curve to update your position</p>
+            <h3 className="font-bold text-slate-800 text-lg">Phase: {currentStage?.label || 'Loading...'}</h3>
+            <p className="text-sm text-slate-500">Click anywhere on the curve to mark your position</p>
           </div>
           <div className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wider">
             {role === 'PEOPLE_LEADER' ? 'Leader View' : 'Individual View'}
@@ -51,7 +51,7 @@ export default function ChangeMapPage() {
             className="w-full h-auto cursor-crosshair drop-shadow-sm"
             onClick={handleMapClick}
           >
-            {/* The Curve Path */}
+            {/* The Background Curve Path */}
             <path
               d="M 0 100 Q 250 100 400 300 T 1000 100"
               fill="none"
@@ -59,6 +59,7 @@ export default function ChangeMapPage() {
               strokeWidth="12"
               strokeLinecap="round"
             />
+            {/* The Interactive Dashed Path */}
             <path
               d="M 0 100 Q 250 100 400 300 T 1000 100"
               fill="none"
@@ -76,7 +77,7 @@ export default function ChangeMapPage() {
           </svg>
         </div>
 
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white">
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white border-t border-slate-100">
           <div className="space-y-2">
             <h4 className="font-bold text-slate-800 flex items-center gap-2">
               <Plus className="w-4 h-4 text-indigo-500" /> What to focus on:
