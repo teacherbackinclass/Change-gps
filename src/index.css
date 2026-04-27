@@ -7,3 +7,62 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ── print styles ────────────────────────────────────────────────────────── */
+@media print {
+  /* hide chrome */
+  header,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt;
+  }
+
+  #plan-printable {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* ensure cards stay on page */
+  .rounded-2xl,
+  .rounded-xl {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* reset bg colours so ink-saving browsers show content */
+  [class*="bg-indigo"],
+  [class*="bg-teal"],
+  [class*="bg-violet"],
+  [class*="bg-amber"],
+  [class*="bg-rose"],
+  [class*="bg-sky"],
+  [class*="bg-slate-50"] {
+    background: #f8fafc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #64748b;
+  }
+}
+
+/* ── reduced-motion base ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

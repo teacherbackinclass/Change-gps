@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "type": "tools_topics_seed",
   "topics": [
     {
@@ -16,33 +16,19 @@
         "PEOPLE_LEADER": "Reduce uncertainty: what changes, what stays, where to ask, and what to do next."
       },
       "role_specific_framing": {
-        "INDIVIDUAL": "Use this when you feel stuck because you don’t know what’s expected.",
+        "INDIVIDUAL": "Use this when you feel stuck because you don't know what's expected.",
         "PEOPLE_LEADER": "Use this when your team is waiting because decision rights are unclear."
       },
       "role_specific_actions": {
-        "INDIVIDUAL": [
-          "Name the decision you need.",
-          "Ask who owns it.",
-          "Ask what ‘good’ looks like this week."
-        ],
-        "PEOPLE_LEADER": [
-          "Name the owner.",
-          "Name the timeline.",
-          "Name the first safe step."
-        ]
+        "INDIVIDUAL": ["Name the decision you need.", "Ask who owns it.", "Ask what 'good' looks like this week."],
+        "PEOPLE_LEADER": ["Name the owner.", "Name the timeline.", "Name the first safe step."]
       },
       "scripts": {
         "INDIVIDUAL": [
-          {
-            "label": "One-sentence ask",
-            "text": "Here’s what I need to move forward: [X]. Who owns this decision, and what’s the next step?"
-          }
+          { "label": "One-sentence ask", "text": "Here's what I need to move forward: [X]. Who owns this decision, and what's the next step?" }
         ],
         "PEOPLE_LEADER": [
-          {
-            "label": "Manager reply",
-            "text": "Here’s what we know, what we don’t, and what we’re doing this week. Questions go here: [channel]."
-          }
+          { "label": "Manager reply", "text": "Here's what we know, what we don't, and what we're doing this week. Questions go here: [channel]." }
         ]
       },
       "assets": []
@@ -65,31 +51,147 @@
         "PEOPLE_LEADER": "Use this to create a predictable weekly rhythm during change."
       },
       "role_specific_actions": {
-        "INDIVIDUAL": [
-          "Ask what the weekly standard is.",
-          "Ask what one example ‘good’ looks like.",
-          "Ask what to practice this week."
-        ],
-        "PEOPLE_LEADER": [
-          "State the standard in one sentence.",
-          "Show one example.",
-          "Pick one practice task and one blocker question."
-        ]
+        "INDIVIDUAL": ["Ask what the weekly standard is.", "Ask what one example 'good' looks like.", "Ask what to practice this week."],
+        "PEOPLE_LEADER": ["State the standard in one sentence.", "Show one example.", "Pick one practice task and one blocker question."]
       },
       "scripts": {
         "INDIVIDUAL": [
-          {
-            "label": "Ask for the weekly standard",
-            "text": "What is the one thing we should do consistently this week in the new way?"
-          }
+          { "label": "Ask for the weekly standard", "text": "What is the one thing we should do consistently this week in the new way?" }
         ],
         "PEOPLE_LEADER": [
-          {
-            "label": "10-minute huddle",
-            "text": "This week’s expectation is: [one sentence]. Why it matters: [one sentence]. Today’s change: [one sentence]. Practice: [5 minutes]. Blockers: [2 minutes]."
-          }
+          { "label": "10-minute huddle", "text": "This week's expectation is: [one sentence]. Why it matters: [one sentence]. Today's change: [one sentence]. Practice: [5 minutes]. Blockers: [2 minutes]." }
         ]
       },
+      "assets": []
+    },
+    {
+      "id": "TOOL_TEN_MIN_SCRIPT_BUILDER",
+      "slug": "ten-minute-script-builder",
+      "title": "Ten-minute script builder",
+      "subtitle": "Build a structured leader script in five fields.",
+      "format": "TOOL",
+      "interactive": true,
+      "tool_component": "TenMinuteScriptBuilder",
+      "best_for": "People Leaders preparing team communication",
+      "estimated_time": "10 min",
+      "primary_model_tag": "COMMS_CHANGE",
+      "bridge_messages": {
+        "INDIVIDUAL": "If your leader hasn't communicated clearly yet, you can use this to show them what you need.",
+        "PEOPLE_LEADER": "Protect capacity: one standard, one example, one mistake to avoid, one practice, one blocker."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this to prepare for a conversation about what your team or manager needs to hear.",
+        "PEOPLE_LEADER": "Use this to build a structured script before your next team message or huddle."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": ["Identify what standard you need clarity on.", "Describe what a good example looks like.", "Name one mistake to avoid."],
+        "PEOPLE_LEADER": ["Fill all five fields.", "Share the output with your team.", "Save it to your plan."]
+      },
+      "scripts": { "INDIVIDUAL": [], "PEOPLE_LEADER": [] },
+      "assets": []
+    },
+    {
+      "id": "TOOL_STAKEHOLDER_MAP",
+      "slug": "stakeholder-map",
+      "title": "Stakeholder map",
+      "subtitle": "Map who matters, how much, and how to engage them.",
+      "format": "TOOL",
+      "interactive": true,
+      "tool_component": "StakeholderMap",
+      "best_for": "Planning stakeholder engagement, identifying champions and blockers",
+      "estimated_time": "15 min",
+      "primary_model_tag": "STAKEHOLDER",
+      "bridge_messages": {
+        "INDIVIDUAL": "Name the people who can unblock you — and how to approach them.",
+        "PEOPLE_LEADER": "Know who your champions, neutrals, and resistors are before the change hits hard."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this to identify who you need to work with — and how to approach each one.",
+        "PEOPLE_LEADER": "Use this to prioritize your engagement. High influence + resistant = your biggest lever."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": ["Add the people who affect your ability to change.", "Note their support level.", "Plan your approach for each."],
+        "PEOPLE_LEADER": ["Map all key stakeholders.", "Identify your champions.", "Plan targeted outreach for resistors."]
+      },
+      "scripts": { "INDIVIDUAL": [], "PEOPLE_LEADER": [] },
+      "assets": []
+    },
+    {
+      "id": "TOOL_FOCUS_INFLUENCE",
+      "slug": "focus-influence-sort",
+      "title": "Focus & influence sort",
+      "subtitle": "Sort your concerns into what you control, can influence, and need help with.",
+      "format": "TOOL",
+      "interactive": true,
+      "tool_component": "FocusInfluenceSort",
+      "best_for": "Feeling overwhelmed, not knowing where to start",
+      "estimated_time": "10 min",
+      "primary_model_tag": "ABILITY",
+      "bridge_messages": {
+        "INDIVIDUAL": "You can't do everything. Name the one thing you'll focus on.",
+        "PEOPLE_LEADER": "Your team needs to see you remove barriers, not just set priorities."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this when you're overwhelmed and don't know where to start. Sort it, then act on just one thing.",
+        "PEOPLE_LEADER": "Use this to separate what you can directly fix from what needs escalation or support."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": ["List your top concerns.", "Sort each into: I control / I can influence / I need help.", "Pick one action and one ask."],
+        "PEOPLE_LEADER": ["List the team's blockers.", "Sort each by your actual control.", "Remove one blocker visibly this week."]
+      },
+      "scripts": { "INDIVIDUAL": [], "PEOPLE_LEADER": [] },
+      "assets": []
+    },
+    {
+      "id": "TOOL_NEXT_STEP_BUILDER",
+      "slug": "next-step-builder",
+      "title": "Next step builder",
+      "subtitle": "One action. One check-in date. One success signal.",
+      "format": "TOOL",
+      "interactive": true,
+      "tool_component": "NextStepBuilder",
+      "best_for": "Getting unstuck, translating insight into action",
+      "estimated_time": "5 min",
+      "primary_model_tag": "ABILITY",
+      "bridge_messages": {
+        "INDIVIDUAL": "A plan with a date is five times more likely to happen than one without.",
+        "PEOPLE_LEADER": "Make the next step obvious for your team — ambiguity is the enemy of momentum."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this when you know something needs to happen but it keeps not happening.",
+        "PEOPLE_LEADER": "Use this to close any meeting or conversation with a clear, accountable next step."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": ["Name one action.", "Set a specific date.", "Define what success looks like."],
+        "PEOPLE_LEADER": ["Name the action and owner.", "Set a check-in date.", "Define the success signal you'll look for."]
+      },
+      "scripts": { "INDIVIDUAL": [], "PEOPLE_LEADER": [] },
+      "assets": []
+    },
+    {
+      "id": "TOOL_REACTION_PROFILE",
+      "slug": "reaction-profile",
+      "title": "Reaction profile",
+      "subtitle": "Understand your default change response — and what to do with it.",
+      "format": "TOOL",
+      "interactive": true,
+      "tool_component": "ReactionProfile",
+      "best_for": "Self-awareness, understanding resistance patterns",
+      "estimated_time": "8 min",
+      "primary_model_tag": "DESIRE",
+      "bridge_messages": {
+        "INDIVIDUAL": "Your reaction is data, not a verdict. Use it to decide your next move.",
+        "PEOPLE_LEADER": "Understanding how your team tends to react helps you meet them where they are."
+      },
+      "role_specific_framing": {
+        "INDIVIDUAL": "Use this to understand your own patterns — not to judge yourself, but to choose your next move more intentionally.",
+        "PEOPLE_LEADER": "Use this to understand your team's range of reactions and tailor your approach accordingly."
+      },
+      "role_specific_actions": {
+        "INDIVIDUAL": ["Answer each scenario honestly.", "Read your profile type.", "Choose one action from the recommendations."],
+        "PEOPLE_LEADER": ["Use the profile types to map your team.", "Tailor your communication for each type.", "Focus first on Resistors and Quit-risks."]
+      },
+      "scripts": { "INDIVIDUAL": [], "PEOPLE_LEADER": [] },
       "assets": []
     }
   ]
