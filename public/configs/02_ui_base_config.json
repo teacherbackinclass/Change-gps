@@ -38,6 +38,12 @@
           "icon": "map-pin"
         },
         {
+          "id": "NAV_CHANGE_MAP",
+          "label": "Change Map",
+          "route": "/map",
+          "icon": "map"
+        },
+        {
           "id": "NAV_NEXT_BEST_MOVE",
           "label": "Next Best Move",
           "route": "/do-next",
